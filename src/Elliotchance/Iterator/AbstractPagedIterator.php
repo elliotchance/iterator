@@ -70,8 +70,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
         if (!array_key_exists($page, $this->cachedPages)) {
             $this->cachedPages[$page] = $this->getPage($page);
         }
-        $p = $this->cachedPages[$page];
-        return $p[$offset % $this->getPageSize()];
+        return $this->cachedPages[$page][$offset % $this->getPageSize()];
     }
 
     public function offsetSet($offset, $value)
@@ -99,6 +98,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
 
     public function rewind()
     {
+        $this->index = 0;
     }
 
     public function valid()

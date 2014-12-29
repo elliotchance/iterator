@@ -7,24 +7,40 @@ use OutOfBoundsException;
 
 class PagedIterator1 extends AbstractPagedIterator
 {
+    protected $totalSize;
+    protected $pageSize;
+
+    public function __construct()
+    {
+        $this->fetchPage(0);
+    }
+
     public function getTotalSize()
     {
-        return 8;
+        return $this->totalSize;
     }
 
     public function getPageSize()
     {
-        return 3;
+        return $this->pageSize;
     }
 
-    public function getPage($pageNumber)
+    protected function fetchPage($pageNumber)
     {
+        $this->totalSize = 8;
+        $this->pageSize = 3;
+
         $pages = [
             [ 1, 2, 3 ],
             [ 4, 5, 6 ],
             [ 7, 8 ],
         ];
         return $pages[$pageNumber];
+    }
+
+    public function getPage($pageNumber)
+    {
+        return $this->fetchPage($pageNumber);
     }
 }
 
@@ -169,5 +185,17 @@ class PagedIteratorTest extends TestCase
             $result[] = $item;
         }
         $this->assert($result, equals, [1, 2, 3, 4, 5, 6, 7, 8]);
+    }
+
+    public function testTraverseArrayInMultipleForeachLoops()
+    {
+        $result = [];
+        foreach ($this->iterator as $item) {
+            $result[] = $item;
+        }
+        foreach ($this->iterator as $item) {
+            $result[] = $item;
+        }
+        $this->assert($result, equals, [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]);
     }
 }
