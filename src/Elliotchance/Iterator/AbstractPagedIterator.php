@@ -32,7 +32,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
 
     public function offsetExists($offset)
     {
-        return $offset >= 0 && $offset <= $this->getTotalSize();
+        return $offset >= 0 && $offset < $this->getTotalSize();
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
         if (!is_int($offset)) {
             throw new InvalidArgumentException("Index must be a positive integer: $offset");
         }
-        if ($offset < 0 || $offset > $this->getTotalSize()) {
+        if (!$this->offsetExists($offset)) {
             throw new OutOfBoundsException("Index out of bounds: $offset");
         }
         $page = ($offset / $this->getPageSize());

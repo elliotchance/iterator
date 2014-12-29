@@ -112,4 +112,9 @@ class PagedIteratorTest extends TestCase
     {
         $this->assert(isset($this->iterator[15]), is_false);
     }
+
+    public function testOffsetThatIsAfterTheLastElementReturnsFalse()
+    {
+        $this->assert(isset($this->iterator[10]), is_false);
+    }
 }
