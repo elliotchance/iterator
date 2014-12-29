@@ -13,6 +13,8 @@ abstract class PagedIterator implements Countable, ArrayAccess
 
     abstract public function getTotalSize();
 
+    abstract public function getPage($pageNumber);
+
     public function count()
     {
         return $this->getTotalSize();
@@ -24,6 +26,9 @@ abstract class PagedIterator implements Countable, ArrayAccess
 
     public function offsetGet($offset)
     {
+        if (0 === $offset) {
+            return $this->getPage(0)[0];
+        }
         throw new OutOfBoundsException("Index out of bounds: $offset");
     }
 
@@ -46,6 +51,11 @@ class PagedIterator1 extends PagedIterator
     public function getPageSize()
     {
         return 3;
+    }
+
+    public function getPage($pageNumber)
+    {
+        return [ 1 ];
     }
 }
 
@@ -81,5 +91,11 @@ class PagedIteratorTest extends TestCase
     {
         $iterator = new PagedIterator1();
         $this->assert($iterator->getPageSize(), equals, 3);
+    }
+
+    public function testGetFirstElement()
+    {
+        $iterator = new PagedIterator1();
+        $this->assert($iterator[0], equals, 1);
     }
 }
