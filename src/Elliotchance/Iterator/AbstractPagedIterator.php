@@ -9,7 +9,7 @@ use OutOfBoundsException;
 
 abstract class AbstractPagedIterator implements Countable, ArrayAccess
 {
-    protected $cache = null;
+    protected $cachedPage = null;
 
     /**
      * @return integer
@@ -56,11 +56,10 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
         if (!$this->offsetExists($offset)) {
             throw new OutOfBoundsException("Index out of bounds: $offset");
         }
-        if ($this->cache === null) {
-            $page = ($offset / $this->getPageSize());
-            $this->cache = $this->getPage($page)[$offset % $this->getPageSize()];
+        if (null === $this->cachedPage) {
+            $this->cachedPage = $this->getPage($offset / $this->getPageSize());
         }
-        return $this->cache;
+        return $this->cachedPage[$offset % $this->getPageSize()];
     }
 
     public function offsetSet($offset, $value)

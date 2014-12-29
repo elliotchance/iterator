@@ -124,7 +124,17 @@ class PagedIteratorTest extends TestCase
             ->expect('getPage')->with(0)->andReturn([1])
             ->get();
 
-        $iterator[0];
-        $iterator[0];
+        $this->verify($iterator[0], equals, 1);
+        $this->verify($iterator[0], equals, 1);
+    }
+
+    public function testValuesOfTheSamePagesAreCached()
+    {
+        $iterator = $this->niceMock('\Elliotchance\Iterator\PagedIterator1')
+            ->expect('getPage')->with(0)->andReturn([1, 2])
+            ->get();
+
+        $this->verify($iterator[0], equals, 1);
+        $this->verify($iterator[1], equals, 2);
     }
 }
