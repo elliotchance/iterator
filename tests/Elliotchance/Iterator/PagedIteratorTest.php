@@ -2,56 +2,10 @@
 
 namespace Elliotchance\Iterator;
 
-use ArrayAccess;
 use Concise\TestCase;
-use Countable;
 use OutOfBoundsException;
 
-abstract class PagedIterator implements Countable, ArrayAccess
-{
-    /**
-     * @return integer
-     */
-    abstract public function getPageSize();
-
-    /**
-     * @return integer
-     */
-    abstract public function getTotalSize();
-
-    /**
-     * @param integer $pageNumber
-     * @return array
-     */
-    abstract public function getPage($pageNumber);
-
-    public function count()
-    {
-        return $this->getTotalSize();
-    }
-
-    public function offsetExists($offset)
-    {
-    }
-
-    public function offsetGet($offset)
-    {
-        if ($offset < 0 || $offset > $this->getPageSize()) {
-            throw new OutOfBoundsException("Index out of bounds: $offset");
-        }
-        return $this->getPage(0)[$offset];
-    }
-
-    public function offsetSet($offset, $value)
-    {
-    }
-
-    public function offsetUnset($offset)
-    {
-    }
-}
-
-class PagedIterator1 extends PagedIterator
+class PagedIterator1 extends AbstractPagedIterator
 {
     public function getTotalSize()
     {
@@ -65,16 +19,31 @@ class PagedIterator1 extends PagedIterator
 
     public function getPage($pageNumber)
     {
-        return [ 1, 2 ];
+        $pages = [
+            [ 1, 2, 3 ],
+            [ 4, 5, 6 ],
+            [ 7, 8 ],
+        ];
+        return $pages[$pageNumber];
     }
 }
 
 class PagedIteratorTest extends TestCase
 {
+    /**
+     * @var PagedIterator1
+     */
+    protected $iterator;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->iterator = new PagedIterator1();
+    }
+
     public function testCountReturnsAnInteger()
     {
-        $iterator = new PagedIterator1();
-        $this->assert(count($iterator), equals, 10);
+        $this->assert(count($this->iterator), equals, 10);
     }
 
     /**
@@ -83,8 +52,7 @@ class PagedIteratorTest extends TestCase
      */
     public function testFetchingANegativeIndexThrowsAnException()
     {
-        $iterator = new PagedIterator1();
-        $iterator[-1];
+        $this->iterator[-1];
     }
 
     /**
@@ -93,25 +61,26 @@ class PagedIteratorTest extends TestCase
      */
     public function testFetchingAnOutOfBoundsIndexThrowsException()
     {
-        $iterator = new PagedIterator1();
-        $iterator[15];
+        $this->iterator[15];
     }
 
     public function testAPageSizeMustBeSet()
     {
-        $iterator = new PagedIterator1();
-        $this->assert($iterator->getPageSize(), equals, 3);
+        $this->assert($this->iterator->getPageSize(), equals, 3);
     }
 
     public function testGetFirstElement()
     {
-        $iterator = new PagedIterator1();
-        $this->assert($iterator[0], equals, 1);
+        $this->assert($this->iterator[0], equals, 1);
     }
 
     public function testGetSecondElement()
     {
-        $iterator = new PagedIterator1();
-        $this->assert($iterator[1], equals, 2);
+        $this->assert($this->iterator[1], equals, 2);
+    }
+
+    public function testGetFirstElementOnSecondPage()
+    {
+        $this->assert($this->iterator[3], equals, 4);
     }
 }
