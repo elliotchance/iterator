@@ -9,10 +9,20 @@ use OutOfBoundsException;
 
 abstract class PagedIterator implements Countable, ArrayAccess
 {
+    /**
+     * @return integer
+     */
     abstract public function getPageSize();
 
+    /**
+     * @return integer
+     */
     abstract public function getTotalSize();
 
+    /**
+     * @param integer $pageNumber
+     * @return array
+     */
     abstract public function getPage($pageNumber);
 
     public function count()
@@ -26,10 +36,10 @@ abstract class PagedIterator implements Countable, ArrayAccess
 
     public function offsetGet($offset)
     {
-        if (0 === $offset) {
-            return $this->getPage(0)[0];
+        if ($offset < 0 || $offset > $this->getPageSize()) {
+            throw new OutOfBoundsException("Index out of bounds: $offset");
         }
-        throw new OutOfBoundsException("Index out of bounds: $offset");
+        return $this->getPage(0)[$offset];
     }
 
     public function offsetSet($offset, $value)
@@ -55,7 +65,7 @@ class PagedIterator1 extends PagedIterator
 
     public function getPage($pageNumber)
     {
-        return [ 1 ];
+        return [ 1, 2 ];
     }
 }
 
@@ -97,5 +107,11 @@ class PagedIteratorTest extends TestCase
     {
         $iterator = new PagedIterator1();
         $this->assert($iterator[0], equals, 1);
+    }
+
+    public function testGetSecondElement()
+    {
+        $iterator = new PagedIterator1();
+        $this->assert($iterator[1], equals, 2);
     }
 }
