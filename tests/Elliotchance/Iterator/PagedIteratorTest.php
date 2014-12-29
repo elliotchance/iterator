@@ -7,11 +7,15 @@ use Concise\TestCase;
 use Countable;
 use OutOfBoundsException;
 
-class PagedIterator1 implements Countable, ArrayAccess
+abstract class PagedIterator implements Countable, ArrayAccess
 {
+    abstract public function getPageSize();
+
+    abstract public function getTotalSize();
+
     public function count()
     {
-        return 0;
+        return $this->getTotalSize();
     }
 
     public function offsetExists($offset)
@@ -32,12 +36,25 @@ class PagedIterator1 implements Countable, ArrayAccess
     }
 }
 
+class PagedIterator1 extends PagedIterator
+{
+    public function getTotalSize()
+    {
+        return 10;
+    }
+
+    public function getPageSize()
+    {
+        return 3;
+    }
+}
+
 class PagedIteratorTest extends TestCase
 {
     public function testCountReturnsAnInteger()
     {
         $iterator = new PagedIterator1();
-        $this->assert(count($iterator), equals, 0);
+        $this->assert(count($iterator), equals, 10);
     }
 
     /**
@@ -58,5 +75,11 @@ class PagedIteratorTest extends TestCase
     {
         $iterator = new PagedIterator1();
         $iterator[15];
+    }
+
+    public function testAPageSizeMustBeSet()
+    {
+        $iterator = new PagedIterator1();
+        $this->assert($iterator->getPageSize(), equals, 3);
     }
 }
