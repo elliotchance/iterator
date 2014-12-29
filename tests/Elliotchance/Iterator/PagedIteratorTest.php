@@ -88,4 +88,13 @@ class PagedIteratorTest extends TestCase
     {
         $this->assert($this->iterator[7], equals, 8);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Index must be a positive integer: foo
+     */
+    public function testFetchingAStringIndexIsNotAllowed()
+    {
+        $this->iterator['foo'];
+    }
 }

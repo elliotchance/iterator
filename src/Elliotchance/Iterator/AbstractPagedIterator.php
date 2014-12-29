@@ -4,6 +4,7 @@ namespace Elliotchance\Iterator;
 
 use ArrayAccess;
 use Countable;
+use InvalidArgumentException;
 use OutOfBoundsException;
 
 abstract class AbstractPagedIterator implements Countable, ArrayAccess
@@ -33,8 +34,15 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
     {
     }
 
+    /**
+     * @param integer $offset
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
+        if (!is_int($offset)) {
+            throw new InvalidArgumentException("Index must be a positive integer: $offset");
+        }
         if ($offset < 0 || $offset > $this->getTotalSize()) {
             throw new OutOfBoundsException("Index out of bounds: $offset");
         }
