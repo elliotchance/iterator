@@ -1,0 +1,16 @@
+{
+    "name": "elliotchance/interator",
+    "description": "Iterator builders for PHP",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elliot Chance",
+            "email": "elliotchance@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "elliotchance/concise": "~1.7"
+    }
+}
