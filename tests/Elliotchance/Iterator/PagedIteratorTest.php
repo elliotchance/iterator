@@ -20,7 +20,7 @@ class PagedIterator1 implements Countable, ArrayAccess
 
     public function offsetGet($offset)
     {
-        throw new OutOfBoundsException("Index out of bounds: -1");
+        throw new OutOfBoundsException("Index out of bounds: $offset");
     }
 
     public function offsetSet($offset, $value)
@@ -48,5 +48,15 @@ class PagedIteratorTest extends TestCase
     {
         $iterator = new PagedIterator1();
         $iterator[-1];
+    }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     * @expectedExceptionMessage Index out of bounds: 15
+     */
+    public function testFetchingAnOutOfBoundsIndexThrowsException()
+    {
+        $iterator = new PagedIterator1();
+        $iterator[15];
     }
 }
