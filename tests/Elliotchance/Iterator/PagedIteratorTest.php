@@ -117,4 +117,14 @@ class PagedIteratorTest extends TestCase
     {
         $this->assert(isset($this->iterator[10]), is_false);
     }
+
+    public function testValuesOfTheSameIndexAreCached()
+    {
+        $iterator = $this->niceMock('\Elliotchance\Iterator\PagedIterator1')
+            ->expect('getPage')->with(0)->andReturn([1])
+            ->get();
+
+        $iterator[0];
+        $iterator[0];
+    }
 }
