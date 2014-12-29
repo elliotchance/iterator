@@ -137,4 +137,15 @@ class PagedIteratorTest extends TestCase
         $this->verify($iterator[0], equals, 1);
         $this->verify($iterator[1], equals, 2);
     }
+
+    public function testValuesFromAnotherPageMustBeRequested()
+    {
+        $iterator = $this->niceMock('\Elliotchance\Iterator\PagedIterator1')
+            ->expect('getPage')->with(0)->andReturn([1, 2, 3])
+                               ->with(1)->andReturn([4, 5, 6])
+            ->get();
+
+        $this->verify($iterator[0], equals, 1);
+        $this->verify($iterator[3], equals, 4);
+    }
 }
