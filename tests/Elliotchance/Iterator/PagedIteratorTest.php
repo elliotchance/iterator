@@ -102,4 +102,9 @@ class PagedIteratorTest extends TestCase
     {
         $this->assert(isset($this->iterator[-1]), is_false);
     }
+
+    public function testOffsetThatIsValidReturnsTrue()
+    {
+        $this->assert(isset($this->iterator[0]), is_true);
+    }
 }
