@@ -38,7 +38,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
         if ($offset < 0 || $offset > $this->getTotalSize()) {
             throw new OutOfBoundsException("Index out of bounds: $offset");
         }
-        $page = ($offset >= $this->getPageSize()) ? 1 : 0;
+        $page = ($offset / $this->getPageSize());
         return $this->getPage($page)[$offset % $this->getPageSize()];
     }
 

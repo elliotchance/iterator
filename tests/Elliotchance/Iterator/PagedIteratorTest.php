@@ -83,4 +83,9 @@ class PagedIteratorTest extends TestCase
     {
         $this->assert($this->iterator[3], equals, 4);
     }
+
+    public function testGetSecondElementOnThirdPage()
+    {
+        $this->assert($this->iterator[7], equals, 8);
+    }
 }
