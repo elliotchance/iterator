@@ -9,7 +9,7 @@ class PagedIterator1 extends AbstractPagedIterator
 {
     public function getTotalSize()
     {
-        return 10;
+        return 8;
     }
 
     public function getPageSize()
@@ -43,7 +43,7 @@ class PagedIteratorTest extends TestCase
 
     public function testCountReturnsAnInteger()
     {
-        $this->assert(count($this->iterator), equals, 10);
+        $this->assert(count($this->iterator), equals, 8);
     }
 
     /**
@@ -149,7 +149,7 @@ class PagedIteratorTest extends TestCase
         $this->verify($iterator[3], equals, 4);
     }
 
-    public function testValuessFromMultiplePagesAreSimultaneouslyCached()
+    public function testValuesFromMultiplePagesAreSimultaneouslyCached()
     {
         $iterator = $this->niceMock('\Elliotchance\Iterator\PagedIterator1')
             ->expect('getPage')->with(0)->andReturn([1, 2, 3])
@@ -160,5 +160,14 @@ class PagedIteratorTest extends TestCase
         $this->verify($iterator[3], equals, 4);
         $this->verify($iterator[0], equals, 1);
         $this->verify($iterator[3], equals, 4);
+    }
+
+    public function testTraverseArrayInForeachLoop()
+    {
+        $result = [];
+        foreach ($this->iterator as $item) {
+            $result[] = $item;
+        }
+        $this->assert($result, equals, [1, 2, 3, 4, 5, 6, 7, 8]);
     }
 }

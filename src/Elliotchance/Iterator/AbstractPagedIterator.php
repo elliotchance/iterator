@@ -5,14 +5,20 @@ namespace Elliotchance\Iterator;
 use ArrayAccess;
 use Countable;
 use InvalidArgumentException;
+use Iterator;
 use OutOfBoundsException;
 
-abstract class AbstractPagedIterator implements Countable, ArrayAccess
+abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
 {
     /**
      * @var array
      */
     protected $cachedPages = [];
+
+    /**
+     * @var integer
+     */
+    protected $index = 0;
 
     /**
      * @return integer
@@ -64,7 +70,8 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
         if (!array_key_exists($page, $this->cachedPages)) {
             $this->cachedPages[$page] = $this->getPage($page);
         }
-        return $this->cachedPages[$page][$offset % $this->getPageSize()];
+        $p = $this->cachedPages[$page];
+        return $p[$offset % $this->getPageSize()];
     }
 
     public function offsetSet($offset, $value)
@@ -73,5 +80,29 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
 
     public function offsetUnset($offset)
     {
+    }
+
+    public function current()
+    {
+        return $this->offsetGet($this->index);
+    }
+
+    public function key()
+    {
+        return $this->index;
+    }
+
+    public function next()
+    {
+        ++$this->index;
+    }
+
+    public function rewind()
+    {
+    }
+
+    public function valid()
+    {
+        return $this->offsetExists($this->index);
     }
 }
