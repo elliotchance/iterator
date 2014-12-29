@@ -97,4 +97,9 @@ class PagedIteratorTest extends TestCase
     {
         $this->iterator['foo'];
     }
+
+    public function testOffsetOfANegativeIndexReturnsFalse()
+    {
+        $this->assert(isset($this->iterator[-1]), is_false);
+    }
 }

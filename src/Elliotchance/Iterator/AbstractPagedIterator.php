@@ -32,6 +32,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess
 
     public function offsetExists($offset)
     {
+        return false;
     }
 
     /**
