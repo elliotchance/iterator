@@ -148,4 +148,17 @@ class PagedIteratorTest extends TestCase
         $this->verify($iterator[0], equals, 1);
         $this->verify($iterator[3], equals, 4);
     }
+
+    public function testValuessFromMultiplePagesAreSimultaneouslyCached()
+    {
+        $iterator = $this->niceMock('\Elliotchance\Iterator\PagedIterator1')
+            ->expect('getPage')->with(0)->andReturn([1, 2, 3])
+                               ->with(1)->andReturn([4, 5, 6])
+            ->get();
+
+        $this->verify($iterator[0], equals, 1);
+        $this->verify($iterator[3], equals, 4);
+        $this->verify($iterator[0], equals, 1);
+        $this->verify($iterator[3], equals, 4);
+    }
 }
