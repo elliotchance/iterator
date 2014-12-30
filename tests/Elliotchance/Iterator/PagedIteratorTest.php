@@ -207,4 +207,13 @@ class PagedIteratorTest extends TestCase
     {
         $this->iterator[0] = true;
     }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Unsetting values is not allowed.
+     */
+    public function testUnsettingAnElementThrowsAnException()
+    {
+        unset($this->iterator[0]);
+    }
 }

@@ -77,7 +77,7 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
     }
 
     /**
-     * @param mixed $offset
+     * @param integer $offset
      * @param mixed $value
      * @throws LogicException
      */
@@ -86,8 +86,12 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
         throw new LogicException("Setting values is not allowed.");
     }
 
+    /**
+     * @param integer $offset
+     */
     public function offsetUnset($offset)
     {
+        throw new LogicException("Unsetting values is not allowed.");
     }
 
     public function current()
