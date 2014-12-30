@@ -6,6 +6,7 @@ use ArrayAccess;
 use Countable;
 use InvalidArgumentException;
 use Iterator;
+use LogicException;
 use OutOfBoundsException;
 
 abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
@@ -56,6 +57,8 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
     /**
      * @param integer $offset
      * @return mixed
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function offsetGet($offset)
     {
@@ -73,8 +76,14 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
         return $this->cachedPages[$page][$offset % $this->getPageSize()];
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @throws LogicException
+     */
     public function offsetSet($offset, $value)
     {
+        throw new LogicException("Setting values is not allowed.");
     }
 
     public function offsetUnset($offset)

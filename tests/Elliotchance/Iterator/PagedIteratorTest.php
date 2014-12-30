@@ -198,4 +198,13 @@ class PagedIteratorTest extends TestCase
         }
         $this->assert($result, equals, [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]);
     }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Setting values is not allowed.
+     */
+    public function testSettingAnElementThrowsAnException()
+    {
+        $this->iterator[0] = true;
+    }
 }

@@ -18,7 +18,8 @@ class MyPagedIterator extends AbstractPagedIterator
     }
 
     /**
-     * The number of items per page. All pages must be the same size (except the last page).
+     * The number of items per page. All pages must be the same size (except the
+     * last page).
      * @return integer
      */
     public function getPageSize()
