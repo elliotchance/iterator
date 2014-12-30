@@ -1,7 +1,13 @@
 iterator
 ========
 
-Iterator builders for PHP
+[![Build Status](https://travis-ci.org/elliotchance/iterator.svg?branch=v1.0)](https://travis-ci.org/elliotchance/iterator)
+[![Coverage Status](https://coveralls.io/repos/elliotchance/iterator/badge.png)](https://coveralls.io/r/elliotchance/iterator)
+[![Latest Stable Version](https://poser.pugx.org/elliotchance/iterator/v/stable.svg)](https://packagist.org/packages/elliotchance/iterator)
+[![Total Downloads](https://poser.pugx.org/elliotchance/iterator/downloads.svg)](https://packagist.org/packages/elliotchance/iterator)
+[![License](https://poser.pugx.org/elliotchance/iterator/license.svg)](https://packagist.org/packages/elliotchance/iterator)
+
+Iterator builders for PHP.
 
 ```php
 use Elliotchance\Iterator\AbstractPagedIterator;
