@@ -1,5 +1,5 @@
 {
-    "name": "elliotchance/interator",
+    "name": "elliotchance/iterator",
     "description": "Iterator builders for PHP",
     "minimum-stability": "stable",
     "license": "MIT",
