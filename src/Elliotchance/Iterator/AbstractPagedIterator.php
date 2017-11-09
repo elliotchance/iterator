@@ -17,6 +17,21 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
     protected $cachedPages = [];
 
     /**
+     * @var array
+     */
+    protected $currentPage;
+
+    /**
+     * @var int
+     */
+    protected $currentPageNumber;
+
+    /**
+     * @var bool
+     */
+    protected $useCache = true;
+
+    /**
      * @var integer
      */
     protected $index = 0;
@@ -70,10 +85,18 @@ abstract class AbstractPagedIterator implements Countable, ArrayAccess, Iterator
         }
 
         $page = (int) ($offset / $this->getPageSize());
-        if (!array_key_exists($page, $this->cachedPages)) {
-            $this->cachedPages[$page] = $this->getPage($page);
+        if ($this->useCache) {
+            if (!array_key_exists($page, $this->cachedPages)) {
+                $this->cachedPages[$page] = $this->getPage($page);
+            }
+            return $this->cachedPages[$page][$offset % $this->getPageSize()];
         }
-        return $this->cachedPages[$page][$offset % $this->getPageSize()];
+
+        if ($page !== $this->currentPageNumber) {
+            $this->currentPageNumber = $page;
+            $this->currentPage = $this->getPage($page);
+        }
+        return $this->currentPage[$offset % $this->getPageSize()];
     }
 
     /**
